@@ -101,7 +101,10 @@ class ViewController: UIViewController {
         setVisibleWithAnimation(activityIndicator, true)
         
         // 2. Observable로 오는 데이터를 받아서 처리하는 방법
-        downloadJson(MEMBER_LIST_URL)
+        let jsonObservable = downloadJson(MEMBER_LIST_URL)
+        let helloObservable = Observable.just("Hello World")
+        
+        _ = Observable.zip(jsonObservable, helloObservable) { $1 + "\n" + $0! }
             .observeOn(MainScheduler.instance) // sugar: operator
             .subscribe(onNext: { json in
                 self.editView.text = json
